@@ -40,8 +40,14 @@ trait UserEndpointLayer{
 }
 
 object Cake extends UserEndpointLayer{
-  lazy val userRepository = new SimpleDBUserRepository
+  
+  lazy val userRepository = new UserCrapMapRepository
   val userEndpoint = new UserEndpoint
+  
+  
+  //private def readAwsKey = scala.io.Source.fromFile(System.getProperty("user.home") + "/.awssecret").getLines.toList(0)
+  //private def readAwsSecret = scala.io.Source.fromFile(System.getProperty("user.home") + "/.awssecret").getLines.toList(1)
+
 }
 
 object Meetup extends App{
@@ -49,6 +55,5 @@ object Meetup extends App{
   import Cake._
   
   Http(8080).plan(userEndpoint).run
-  
   
 }
