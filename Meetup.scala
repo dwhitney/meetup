@@ -25,6 +25,7 @@ trait UserEndpointLayer{
   import unfiltered.response._
   
   val userRepository: UserRepository
+  val fileRepository: FileRepository
   
   class UserEndpoint extends Plan{
     def intent = {
@@ -35,20 +36,24 @@ trait UserEndpointLayer{
         if(userRepository.read(email).isDefined) Ok ~> ResponseString(email + " exists!")
         else Ok ~> ResponseString(email + " does not exist!")
       case Path(Seg("saveFile" :: Nil)) => 
-        fileRepository.save(new File("Meetup.scala"))
+        fileRepository.saveFile(new java.io.File("Meetup.scala"))
         Ok ~> ResponseString("file saved!")
     }
   }
   
 }
 
-object Cake extends UserEndpointLayer with SimpleDBUserRepositoryLayer{
+object Cake extends UserEndpointLayer 
+  with AWSLayer
+  with SimpleDBUserRepositoryLayer
+  with S3FileRepositoryLayer{
   
   lazy val awsKey: String = readAwsKey
   lazy val awsSecret: String = readAwsSecret
   
   lazy val userRepository = new UserCrapMapRepository
-  val userEndpoint = new UserEndpoint
+  lazy val fileRepository = new S3FileRepository
+  lazy val userEndpoint = new UserEndpoint
   
   
   private def readAwsKey = scala.io.Source.fromFile(System.getProperty("user.home") + "/.awssecret").getLines.toList(0)
