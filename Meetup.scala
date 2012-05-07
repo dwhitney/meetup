@@ -39,14 +39,17 @@ trait UserEndpointLayer{
   
 }
 
-object Cake extends UserEndpointLayer{
+object Cake extends UserEndpointLayer with SimpleDBUserRepositoryLayer{
+  
+  lazy val awsKey: String = readAwsKey
+  lazy val awsSecret: String = readAwsSecret
   
   lazy val userRepository = new UserCrapMapRepository
   val userEndpoint = new UserEndpoint
   
   
-  //private def readAwsKey = scala.io.Source.fromFile(System.getProperty("user.home") + "/.awssecret").getLines.toList(0)
-  //private def readAwsSecret = scala.io.Source.fromFile(System.getProperty("user.home") + "/.awssecret").getLines.toList(1)
+  private def readAwsKey = scala.io.Source.fromFile(System.getProperty("user.home") + "/.awssecret").getLines.toList(0)
+  private def readAwsSecret = scala.io.Source.fromFile(System.getProperty("user.home") + "/.awssecret").getLines.toList(1)
 
 }
 
