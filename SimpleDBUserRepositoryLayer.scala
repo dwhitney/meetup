@@ -6,6 +6,7 @@ trait SimpleDBUserRepositoryLayer{
   
   val awsKey: String
   val awsSecret: String
+  
   lazy val awsCredentials: AWSCredentials = new BasicAWSCredentials(awsKey, awsSecret)  
   
   class SimpleDBUserRepository extends UserRepository{
