@@ -39,13 +39,17 @@ trait UserEndpointLayer{
   
 }
 
-object Cake extends UserEndpointLayer 
+object Cake 
+  extends UserEndpointLayer 
+  with AWSLayer
+  with S3FileRepositoryLayer
   with SimpleDBUserRepositoryLayer{
   
   lazy val awsKey: String = readAwsKey
   lazy val awsSecret: String = readAwsSecret
   
   lazy val userRepository = new UserCrapMapRepository
+  lazy val fileRepository = new S3FileRepository
   lazy val userEndpoint = new UserEndpoint
   
   
