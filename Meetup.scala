@@ -34,6 +34,9 @@ trait UserEndpointLayer{
       case Path(Seg("exists" :: email :: Nil)) =>
         if(userRepository.read(email).isDefined) Ok ~> ResponseString(email + " exists!")
         else Ok ~> ResponseString(email + " does not exist!")
+      case Path(Seg("saveFile" :: Nil)) => 
+        fileRepository.save(new File("Meetup.scala"))
+        Ok ~> ResponseString("file saved!")
     }
   }
   
