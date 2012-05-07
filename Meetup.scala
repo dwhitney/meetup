@@ -40,7 +40,7 @@ trait UserEndpointLayer{
 }
 
 object Cake extends UserEndpointLayer{
-  lazy val userRepository = new UserCrapMapRepository
+  lazy val userRepository = new SimpleDBUserRepository
   val userEndpoint = new UserEndpoint
 }
 
