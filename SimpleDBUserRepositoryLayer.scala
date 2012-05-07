@@ -2,7 +2,11 @@ import com.amazonaws.services.simpledb._
 import com.amazonaws.services.simpledb.model._
 import com.amazonaws.auth._
 
-trait SimpleDBUserRepositoryLayer{ self: AWSLayer =>
+trait SimpleDBUserRepositoryLayer{
+  
+  val awsKey: String
+  val awsSecret: String
+  lazy val awsCredentials: AWSCredentials = new BasicAWSCredentials(awsKey, awsSecret)
   
   class SimpleDBUserRepository extends UserRepository{
   

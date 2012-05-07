@@ -6,7 +6,11 @@ trait FileRepository{
   def saveFile(file: File): Unit
 }
 
-trait S3FileRepositoryLayer{ self: AWSLayer =>
+trait S3FileRepositoryLayer{
+  
+  val awsKey: String
+  val awsSecret: String
+  lazy val awsCredentials: AWSCredentials = new BasicAWSCredentials(awsKey, awsSecret)
 
   class S3FileRepository extends FileRepository{
     
